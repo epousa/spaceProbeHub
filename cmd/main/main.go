@@ -15,14 +15,6 @@ func init() {
 	}
 }
 
-/*
-RESOURCE SERVER
-- listen on a TCP port
-- handle requests: route a URL to a file
-
-ServeMux = HTTP request router = multiplexor
-*/
-
 func main() {
 
 	router := routes.NewRouter()

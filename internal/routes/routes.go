@@ -21,6 +21,14 @@ type apodResponse struct {
 }
 
 func NewRouter() http.Handler {
+	/*
+		RESOURCE SERVER
+		- listen on a TCP port
+		- handle requests: route a URL to a file
+
+		ServeMux = HTTP request router = multiplexor
+	*/
+
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/", indexHandler)
