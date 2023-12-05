@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"log"
@@ -10,13 +11,24 @@ import (
 	"github.com/joho/godotenv"
 )
 
+type apodResponse struct {
+	Date           string `json:"date"`
+	Explanation    string `json:"explanation"`
+	Hdurl          string `json:"hdurl"`
+	MediaType      string `json:"media_type"`
+	ServiceVersion string `json:"service_version"`
+	Title          string `json:"title"`
+	URL            string `json:"url"`
+}
+
 func init() {
 	if err := godotenv.Load("../.env"); err != nil {
 		log.Print("No .env file found")
 	}
 }
 
-func getRequest(client *http.Client, url string) string {
+func getRequest(client *http.Client, url string) apodResponse {
+	var result apodResponse
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -34,7 +46,11 @@ func getRequest(client *http.Client, url string) string {
 		log.Fatal(err)
 	}
 
-	return string(body)
+	if err := json.Unmarshal(body, &result); err != nil { // Parse []byte to go struct pointer
+		log.Fatal(err)
+	}
+
+	return result
 }
 
 func main() {
